@@ -1,12 +1,50 @@
 import { FC, PropsWithChildren } from 'react'
-import 'twin.macro'
+import { AppShell, Navbar, Header, NavLink } from '@mantine/core'
+import {
+  IconHome2,
+  IconGauge,
+  IconChevronRight,
+  IconActivity,
+  IconCircleOff,
+  IconBuildingSkyscraper,
+} from '@tabler/icons-react'
+import { useRouter } from 'next/router'
+
+import { ConnectButton } from '@components/web3/ConnectButton'
 
 export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
+  const router = useRouter()
+
   return (
-    <>
-      <div tw="relative flex min-h-full flex-col">
-        <main tw="relative flex grow flex-col">{children}</main>
-      </div>
-    </>
+    <AppShell
+      padding="md"
+      navbar={
+        <Navbar width={{ base: 300 }} height={500} p="xs">
+          <NavLink
+            label="Home"
+            icon={<IconHome2 size="1rem" stroke={1.5} />}
+            onClick={() => router.push('/')}
+          />
+          <NavLink
+            label="Booking"
+            icon={<IconBuildingSkyscraper size="1rem" stroke={1.5} />}
+            onClick={() => router.push('/booking')}
+          />
+        </Navbar>
+      }
+      header={
+        <Header height={60} p="xs">
+          <ConnectButton />
+        </Header>
+      }
+      styles={(theme) => ({
+        main: {
+          backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+        },
+      })}
+    >
+      {children}
+    </AppShell>
   )
 }

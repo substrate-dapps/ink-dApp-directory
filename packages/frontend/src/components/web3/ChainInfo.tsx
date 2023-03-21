@@ -1,4 +1,4 @@
-import { Card, Spinner } from '@chakra-ui/react'
+import { Card } from '@mantine/core'
 import { useInkathon } from '@scio-labs/use-inkathon'
 import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'
@@ -36,7 +36,6 @@ export const ChainInfo: FC = () => {
   if (!api)
     return (
       <div tw="mt-8 mb-4 flex flex-col items-center justify-center space-y-3 text-center font-mono text-sm text-gray-400 sm:(flex-row space-x-3 space-y-0)">
-        <Spinner size="sm" />
         <div>
           Connecting to {activeChain?.name} ({activeChain?.rpcUrls?.[0]})
         </div>
@@ -48,7 +47,7 @@ export const ChainInfo: FC = () => {
       <div tw="flex grow flex-col space-y-4 max-w-[20rem]">
         <h2 tw="text-center font-mono text-gray-400">Chain Info</h2>
 
-        <Card variant="outline" p={4} bgColor="whiteAlpha.100">
+        <Card variant="outline" p={4}>
           {/* Metadata */}
           {Object.entries(chainInfo || {}).map(([key, value]) => (
             <div key={key} tw="text-sm leading-7">

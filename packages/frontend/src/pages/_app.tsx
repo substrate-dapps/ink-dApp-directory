@@ -1,3 +1,4 @@
+import { MantineProvider } from '@mantine/core'
 import { ChakraProvider, DarkMode } from '@chakra-ui/react'
 import { BaseLayout } from '@components/layout/BaseLayout'
 import { HotToastConfig } from '@components/layout/HotToastConfig'
@@ -70,17 +71,17 @@ function MyApp({ Component, pageProps }: AppProps) {
         deployments={getDeployments()}
       >
         <CacheProvider value={cache}>
-          <ChakraProvider>
-            <DarkMode>
-              <GlobalStyles />
-
-              <BaseLayout>
-                <Component {...pageProps} />
-              </BaseLayout>
-
-              <HotToastConfig />
-            </DarkMode>
-          </ChakraProvider>
+          <MantineProvider withGlobalStyles withNormalizeCSS theme={{ colorScheme: 'dark' }}>
+            <ChakraProvider>
+              <DarkMode>
+                <GlobalStyles />
+                <BaseLayout>
+                  <Component {...pageProps} />
+                </BaseLayout>
+                <HotToastConfig />
+              </DarkMode>
+            </ChakraProvider>
+          </MantineProvider>
         </CacheProvider>
       </UseInkathonProvider>
     </>
