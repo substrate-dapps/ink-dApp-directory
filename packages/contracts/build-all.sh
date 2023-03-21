@@ -10,7 +10,7 @@ DIR="${DIR:=./deployments}"
 for i in "${contracts[@]}"
 do
   echo -e "\nBuilding './$i/Cargo.toml'…"
-  cargo contract build --release --quiet --manifest-path $i/Cargo.toml
+  cargo +nightly contract build --release --quiet --manifest-path $i/Cargo.toml
 
   echo "Copying build files to '$DIR/$i/'…"
   mkdir -p $DIR/$i
