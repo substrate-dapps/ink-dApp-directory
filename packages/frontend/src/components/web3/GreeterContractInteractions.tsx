@@ -18,7 +18,7 @@ export const GreeterContractInteractions: FC = () => {
   const [greeterMessage, setGreeterMessage] = useState<string>()
   const [fetchIsLoading, setFetchIsLoading] = useState<boolean>()
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>()
-  const form = useForm<{ newMessage: string }>()
+  const form = useForm<{ roomName: string }>()
 
   // Fetch Greeting
   const fetchGreeting = async () => {
@@ -52,10 +52,10 @@ export const GreeterContractInteractions: FC = () => {
     toast.loading('Updating greeting…', { id: `update` })
     try {
       // Gather form value
-      const newMessage = form.getValues('newMessage')
+      const newMessage = form.getValues('roomName')
 
       // Estimate gas & send transaction
-      await contractTx(api, activeAccount.address, contract, 'setMessage', {}, [newMessage])
+      await contractTx(api, activeAccount.address, contract, 'roomBook::addRoom', {}, [newMessage])
       toast.success(`Successfully updated greeting`)
       form.reset()
     } catch (e) {
@@ -90,7 +90,7 @@ export const GreeterContractInteractions: FC = () => {
               <Stack direction="row" spacing={2} align="end">
                 <FormControl>
                   <FormLabel>Update Greeting</FormLabel>
-                  <Input disabled={updateIsLoading} {...form.register('newMessage')} />
+                  <Input disabled={updateIsLoading} {...form.register('roomName')} />
                 </FormControl>
                 <Button
                   mt={4}

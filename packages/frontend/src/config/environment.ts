@@ -11,6 +11,6 @@ export const env = {
   url: getURL(),
   isProduction: process.env.NEXT_PUBLIC_PRODUCTION_MODE === 'true',
 
-  defaultChain: process.env.NEXT_PUBLIC_DEFAULT_CHAIN!,
+  defaultChain: process.env.NEXT_PUBLIC_DEFAULT_CHAIN ?? 'alephzero-testnet',
   supportedChains: getSupportedChains(),
 }
