@@ -21,6 +21,7 @@
     "dev": "pnpm run --filter frontend dev",
     "contracts:build": "pnpm run --filter contracts build",
     "build": "pnpm run --filter frontend build",
+    "export": "pnpm run --filter frontend export",
     "start": "pnpm run --filter frontend start",
     "lint": "pnpm run --filter frontend lint",
     "lint:fix": "pnpm run --filter frontend lint:fix",

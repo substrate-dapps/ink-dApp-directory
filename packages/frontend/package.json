@@ -12,6 +12,7 @@
     "node": "pnpm run --filter contracts node",
     "dev-and-node": "concurrently \"pnpm dev\" \"pnpm node\" --names \"Next,Node\" --kill-others",
     "build": "NODE_ENV=production next build",
+    "export": "NODE_ENV=production next export",
     "start": "NODE_ENV=production next start",
     "type-check": "tsc --pretty --noEmit",
     "lint": "prettier . --check && pnpm eslint",
