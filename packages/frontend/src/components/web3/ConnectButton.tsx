@@ -107,7 +107,7 @@ export const ConnectButton: FC<ConnectButtonProps> = () => {
               <VStack align="start" spacing={0}>
                 <HStack>
                   <Text>{chain.name}</Text>
-                  {chain.network === activeChain?.network && <AiOutlineCheckCircle size={16} />}
+                  {chain?.network === activeChain?.network && <AiOutlineCheckCircle size={16} />}
                 </HStack>
               </VStack>
             </MenuItem>

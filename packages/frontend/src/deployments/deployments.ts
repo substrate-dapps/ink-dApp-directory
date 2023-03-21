@@ -8,7 +8,7 @@ export enum ContractIds {
 export const getDeployments = async (): Promise<SubstrateDeployment[]> => {
   const networks = env.supportedChains
   const deployments = networks
-    .map(async (network) => [
+    ?.map(async (network) => [
       {
         contractId: ContractIds.Contract,
         networkId: network,
