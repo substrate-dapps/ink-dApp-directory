@@ -8,10 +8,13 @@
 let nextConfig = {}
 
 const withTwin = require('./withTwin.js')
+const isProd = process.env.NODE_ENV === 'production'
+
 nextConfig = withTwin(nextConfig)
 
 module.exports = {
   ...nextConfig,
+  ...(isProd && { assetPrefix: '/room-booking-openbrush-dapp' }),
   images: {
     unoptimized: true,
   },
