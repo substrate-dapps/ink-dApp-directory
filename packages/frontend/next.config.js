@@ -14,7 +14,7 @@ nextConfig = withTwin(nextConfig)
 
 module.exports = {
   ...nextConfig,
-  ...(isProd && { assetPrefix: '/room-booking-openbrush-dapp' }),
+  ...(isProd && { assetPrefix: '/ink-dApp-directory' }),
   images: {
     unoptimized: true,
   },
