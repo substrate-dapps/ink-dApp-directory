@@ -35,8 +35,8 @@ importers:
         specifier: ^10.4.1
         version: 10.4.2(@polkadot/util@10.4.2)
       '@scio-labs/use-inkathon':
-        specifier: 0.0.1-alpha.28
-        version: 0.0.1-alpha.28(@polkadot/api-contract@9.14.2)(@polkadot/api@9.14.2)(@polkadot/extension-dapp@0.44.9)(@polkadot/extension-inject@0.44.9)(@polkadot/types@9.14.2)(@polkadot/util@10.4.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.0.1-alpha.36
+        version: 0.0.1-alpha.36(@polkadot/api-contract@9.14.2)(@polkadot/api@9.14.2)(@polkadot/extension-dapp@0.44.9)(@polkadot/extension-inject@0.44.9)(@polkadot/types@9.14.2)(@polkadot/util@10.4.2)(react-dom@18.2.0)(react@18.2.0)
       '@types/node':
         specifier: ^18.15.0
         version: 18.15.0
@@ -73,6 +73,9 @@ importers:
       '@mantine/core':
         specifier: ^6.0.4
         version: 6.0.4(@emotion/react@11.10.6)(@mantine/hooks@6.0.4)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/form':
+        specifier: ^6.0.5
+        version: 6.0.5(react@18.2.0)
       '@mantine/hooks':
         specifier: ^6.0.4
         version: 6.0.4(react@18.2.0)
@@ -98,8 +101,8 @@ importers:
         specifier: ^10.4.2
         version: 10.4.2(@polkadot/util@10.4.2)
       '@scio-labs/use-inkathon':
-        specifier: 0.0.1-alpha.28
-        version: 0.0.1-alpha.28(@polkadot/api-contract@9.14.2)(@polkadot/api@9.14.2)(@polkadot/extension-dapp@0.44.9)(@polkadot/extension-inject@0.44.9)(@polkadot/types@9.14.2)(@polkadot/util@10.4.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.0.1-alpha.36
+        version: 0.0.1-alpha.36(@polkadot/api-contract@9.14.2)(@polkadot/api@9.14.2)(@polkadot/extension-dapp@0.44.9)(@polkadot/extension-inject@0.44.9)(@polkadot/types@9.14.2)(@polkadot/util@10.4.2)(react-dom@18.2.0)(react@18.2.0)
       '@tabler/icons-react':
         specifier: ^2.11.0
         version: 2.11.0(react@18.2.0)
@@ -118,9 +121,6 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
-      react-hook-form:
-        specifier: ^7.43.5
-        version: 7.43.5(react@18.2.0)
       react-hot-toast:
         specifier: ^2.4.0
         version: 2.4.0(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0)
@@ -1937,6 +1937,16 @@ packages:
       - '@types/react'
     dev: false
 
+  /@mantine/form@6.0.5(react@18.2.0):
+    resolution: {integrity: sha512-7YclnSzYCCVZQKT4g9Hta6cvlVf20RUe5L6x1s570nfJFXk1j9wbrPIJ5pEUdXwTnMGfcZ+n0OmcCxUnf8lpPA==}
+    peerDependencies:
+      react: '>=16.8.0 || ^18.0.0'
+    dependencies:
+      fast-deep-equal: 3.1.3
+      klona: 2.0.6
+      react: 18.2.0
+    dev: false
+
   /@mantine/hooks@6.0.4(react@18.2.0):
     resolution: {integrity: sha512-rG+P18vOJcMQGo/3XAzR3f7rtmzjuccTIc10I9F2J49cRKem4wQZQdYeA8Wnxx95SRmVTQtf2hYXjbUliqgmAA==}
     peerDependencies:
@@ -2645,17 +2655,17 @@ packages:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: true
 
-  /@scio-labs/use-inkathon@0.0.1-alpha.28(@polkadot/api-contract@9.14.2)(@polkadot/api@9.14.2)(@polkadot/extension-dapp@0.44.9)(@polkadot/extension-inject@0.44.9)(@polkadot/types@9.14.2)(@polkadot/util@10.4.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-bmvbtdcing3MRcJncwgaF0TEdxCuuqM9qTbI9sheUaNF4wSGPzWZHJ7GNHauDDMN8seU2b/W64picPrwZWKo9Q==}
+  /@scio-labs/use-inkathon@0.0.1-alpha.36(@polkadot/api-contract@9.14.2)(@polkadot/api@9.14.2)(@polkadot/extension-dapp@0.44.9)(@polkadot/extension-inject@0.44.9)(@polkadot/types@9.14.2)(@polkadot/util@10.4.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-SFI4+Ki5mbT2cBBSdkUcLyDG8wLTnVZr6yRszkASrWJOXgxK5fXGfOY/VZNL4OH+CdakyLuAV2ATI8GRuq8EGw==}
     peerDependencies:
-      '@polkadot/api': ^9.14.0
-      '@polkadot/api-contract': ^9.14.0
-      '@polkadot/extension-dapp': ^0.44.0
-      '@polkadot/extension-inject': ^0.44.0
-      '@polkadot/types': ^9.14.0
-      '@polkadot/util': ^10.4.0
-      react: ^18.0.0
-      react-dom: ^18.0.0
+      '@polkadot/api': '>=9.14.0'
+      '@polkadot/api-contract': '>=9.14.0'
+      '@polkadot/extension-dapp': '>=0.44.0'
+      '@polkadot/extension-inject': '>=0.44.0'
+      '@polkadot/types': '>=9.14.0'
+      '@polkadot/util': '>=10.4.0'
+      react: '>=18.0.0 || ^18.0.0'
+      react-dom: '>=18.0.0 || ^18.0.0'
     dependencies:
       '@polkadot/api': 9.14.2
       '@polkadot/api-contract': 9.14.2
@@ -4377,7 +4387,6 @@ packages:
 
   /fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-    dev: true
 
   /fast-glob@3.2.12:
     resolution: {integrity: sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==}
@@ -5099,6 +5108,11 @@ packages:
       array-includes: 3.1.6
       object.assign: 4.1.4
     dev: true
+
+  /klona@2.0.6:
+    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
+    engines: {node: '>= 8'}
+    dev: false
 
   /language-subtag-registry@0.3.22:
     resolution: {integrity: sha512-tN0MCzyWnoz/4nHS6uxdlFWoUZT7ABptwKPQ52Ea7URk6vll88bWBVhodtnlfEuCcKWNGoc+uGbw1cwa9IKh/w==}
@@ -5909,15 +5923,6 @@ packages:
       react-clientside-effect: 1.2.6(react@18.2.0)
       use-callback-ref: 1.3.0(@types/react@18.0.28)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.0.28)(react@18.2.0)
-    dev: false
-
-  /react-hook-form@7.43.5(react@18.2.0):
-    resolution: {integrity: sha512-YcaXhuFHoOPipu5pC7ckxrLrialiOcU91pKu8P+isAcXZyMgByUK9PkI9j5fENO4+6XU5PwWXRGMIFlk9u9UBQ==}
-    engines: {node: '>=12.22.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^18.0.0
-    dependencies:
-      react: 18.2.0
     dev: false
 
   /react-hot-toast@2.4.0(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0):

@@ -1,4 +1,15 @@
-import { Button, Card, FormControl, FormLabel, Input, Stack } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import {
+  Button,
+  Center,
+  Card,
+  TextInput,
+  Input,
+  Text,
+  useMantineTheme,
+  Divider,
+} from '@mantine/core'
+import { useForm } from '@mantine/form'
 import { ContractIds } from '@deployments/deployments'
 import {
   contractQuery,
@@ -7,10 +18,7 @@ import {
   useInkathon,
   useRegisteredContract,
 } from '@scio-labs/use-inkathon'
-import { FC, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import 'twin.macro'
 
 export const Increment = () => {
   const { api, activeAccount, isConnected, activeSigner } = useInkathon()
@@ -18,98 +26,86 @@ export const Increment = () => {
   const [greeterMessage, setGreeterMessage] = useState<string>()
   const [fetchIsLoading, setFetchIsLoading] = useState<boolean>()
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>()
-  const form = useForm<{ roomName: string }>()
+  const form = useForm<{ incBy: number }>()
+  const theme = useMantineTheme()
 
-  // Fetch Greeting
-  const fetchGreeting = async () => {
+  const fetchGet = async () => {
     if (!contract || !api) return
 
     setFetchIsLoading(true)
     try {
-      const result = await contractQuery(api, '', contract, 'greet')
+      const result = await contractQuery(api, '', contract, 'get')
       const message = unwrapResultOrError<string>(result)
       setGreeterMessage(message)
     } catch (e) {
-      console.error(e)
-      toast.error('Error while fetching greeting. Try again…')
+      toast.error('Error while fetching increment result. Try again…')
       setGreeterMessage(undefined)
     } finally {
       setFetchIsLoading(false)
     }
   }
+
   useEffect(() => {
-    fetchGreeting()
+    fetchGet()
   }, [contract])
 
-  // Update Greeting
-  const updateGreeting = async () => {
+  const inc = async () => {
     if (!activeAccount || !contract || !activeSigner || !api) {
       toast.error('Wallet not connected. Try again…')
       return
     }
-
     setUpdateIsLoading(true)
-    toast.loading('Updating greeting…', { id: `update` })
+    toast.loading('Incrementing…', { id: `update` })
     try {
-      // Gather form value
-      const newMessage = form.getValues('roomName')
-
-      // Estimate gas & send transaction
-      await contractTx(api, activeAccount.address, contract, 'inc', {}, [newMessage])
-      toast.success(`Successfully updated greeting`)
+      const incBy = form.values.incBy
+      await contractTx(api, activeAccount.address, contract, 'inc', {}, [incBy])
+      toast.success(`Successfully incremented`)
       form.reset()
-    } catch (e) {
-      console.error(e)
-      toast.error('Error while updating greeting. Try again.')
+    } catch (e: any) {
+      console.log(e)
+      return form.setFieldError('incBy', 'Invalid character, please use a number')
+      const isInvalidChar = e?.includes('Invalid character')
+      if (isInvalidChar) {
+        form.setFieldError('incBy', 'Invalid character, please use a number')
+      }
+      toast.error('Error while incrementing. Try again.')
     } finally {
       setUpdateIsLoading(false)
       toast.dismiss(`update`)
-      fetchGreeting()
+      fetchGet()
     }
   }
 
   if (!contract) return null
 
   return (
-    <>
-      <div tw="flex grow flex-col space-y-4 max-w-[20rem]">
-        <h2 tw="text-center font-mono text-gray-400">Greeter Smart Contract</h2>
-
-        {/* Fetched Greeting */}
-        <Card variant="outline" p={4} bgColor="whiteAlpha.100">
-          <FormControl>
-            <FormLabel>Fetched Greeting</FormLabel>
-            <Input placeholder={fetchIsLoading ? 'Loading…' : greeterMessage} disabled={true} />
-          </FormControl>
-        </Card>
-
-        {/* Update Greeting */}
-        {!!isConnected && (
-          <Card variant="outline" p={4} bgColor="whiteAlpha.100">
+    <Center>
+      <div style={{ width: '20rem' }}>
+        <Card shadow="sm" padding={theme.spacing.md}>
+          <Text size="lg">Incrementer Smart Contract</Text>
+          <Divider size="sm" my={20} />
+          <Text size="md">Result</Text>
+          <Input placeholder={fetchIsLoading ? 'Loading…' : greeterMessage} disabled={true} />
+          {!!isConnected && (
             <form>
-              <Stack direction="row" spacing={2} align="end">
-                <FormControl>
-                  <FormLabel>Update Greeting</FormLabel>
-                  <Input disabled={updateIsLoading} {...form.register('roomName')} />
-                </FormControl>
-                <Button
-                  mt={4}
-                  colorScheme="purple"
-                  isLoading={updateIsLoading}
-                  disabled={updateIsLoading}
-                  type="button"
-                  onClick={updateGreeting}
-                >
-                  Submit
-                </Button>
-              </Stack>
+              <TextInput
+                label="Update Greeting"
+                disabled={updateIsLoading}
+                {...form.getInputProps('incBy')}
+              />
+              <Divider size="sm" my={20} />
+              <Button
+                variant="outline"
+                disabled={updateIsLoading}
+                onClick={inc}
+                loading={updateIsLoading}
+              >
+                Increment
+              </Button>
             </form>
-          </Card>
-        )}
-
-        {/* Contract Address */}
-        <p tw="text-center font-mono text-xs text-gray-600">{contractAddress}</p>
+          )}
+        </Card>
       </div>
-    </>
+    </Center>
   )
 }
