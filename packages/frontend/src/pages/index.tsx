@@ -1,5 +1,4 @@
 import { HomePageTitle } from '@components/home/HomePageTitle'
-import { ChainInfo } from '@components/web3/ChainInfo'
 import { useInkathon } from '@scio-labs/use-inkathon'
 import type { NextPage } from 'next'
 import { useEffect } from 'react'
@@ -16,7 +15,6 @@ const HomePage: NextPage = () => {
   return (
     <>
       <HomePageTitle />
-      <ChainInfo />
     </>
   )
 }
