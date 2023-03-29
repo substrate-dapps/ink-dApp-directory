@@ -42,13 +42,10 @@ export const Register = () => {
       const hash = blake2AsHex(name)
       const result = await contractTx(api, activeAccount.address, contract, 'register', {}, [hash])
       const message = unwrapResultOrError<string>(result as any)
-
-      console.log({ message, result })
-
       toast.success(`Successfully registered ${name}!`)
       form.reset()
     } catch (e: any) {
-      if (e.errorMessage.includes('NameAlreadyExists')) {
+      if (e?.errorMessage?.includes('NameAlreadyExists')) {
         form.setFieldError('name', 'Name already exists')
         return
       }
