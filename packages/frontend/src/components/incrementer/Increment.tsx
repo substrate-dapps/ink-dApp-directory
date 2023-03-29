@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
 
-export const GreeterContractInteractions: FC = () => {
+export const Increment = () => {
   const { api, activeAccount, isConnected, activeSigner } = useInkathon()
   const { contract, address: contractAddress } = useRegisteredContract(ContractIds.Incrementer)
   const [greeterMessage, setGreeterMessage] = useState<string>()
@@ -55,7 +55,7 @@ export const GreeterContractInteractions: FC = () => {
       const newMessage = form.getValues('roomName')
 
       // Estimate gas & send transaction
-      await contractTx(api, activeAccount.address, contract, 'roomBook::addRoom', {}, [newMessage])
+      await contractTx(api, activeAccount.address, contract, 'inc', {}, [newMessage])
       toast.success(`Successfully updated greeting`)
       form.reset()
     } catch (e) {

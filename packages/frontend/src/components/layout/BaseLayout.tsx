@@ -1,13 +1,6 @@
 import { FC, PropsWithChildren } from 'react'
 import { AppShell, Navbar, Header, NavLink } from '@mantine/core'
-import {
-  IconHome2,
-  IconGauge,
-  IconChevronRight,
-  IconActivity,
-  IconCircleOff,
-  IconBuildingSkyscraper,
-} from '@tabler/icons-react'
+import { IconHome2, IconPlus } from '@tabler/icons-react'
 import { useRouter } from 'next/router'
 
 import { ConnectButton } from '@components/web3/ConnectButton'
@@ -26,9 +19,9 @@ export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
             onClick={() => router.push('/')}
           />
           <NavLink
-            label="Booking"
-            icon={<IconBuildingSkyscraper size="1rem" stroke={1.5} />}
-            onClick={() => router.push('/booking')}
+            label="Incrementer"
+            icon={<IconPlus size="1rem" stroke={1.5} />}
+            onClick={() => router.push('/incrementer')}
           />
         </Navbar>
       }
