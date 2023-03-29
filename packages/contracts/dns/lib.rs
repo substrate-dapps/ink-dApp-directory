@@ -77,6 +77,15 @@ mod dns {
         }
     }
 
+    impl core::fmt::Display for Error {
+        fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+            match self {
+                Error::NameAlreadyExists => write!(f, "The provided name has a hash that is already registered. Please choose a different name."),
+                Error::CallerIsNotOwner => write!(f, "Caller is not the owner."),
+            }
+        }
+    }
+
     /// Errors that can occur upon calling this contract.
     #[derive(Debug, PartialEq, Eq, scale::Encode, scale::Decode)]
     #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo))]
@@ -97,12 +106,24 @@ mod dns {
             Default::default()
         }
 
-        /// Register specific name with caller as owner.
+        /// Register a specific name with the caller as the owner.
+        ///
+        /// This method allows users to register unique names that can be later associated with
+        /// other information, such as addresses or other data. A name can only be registered once,
+        /// and the caller becomes the owner of the name.
+        ///
+        /// # Params
+        ///
+        /// - `name`: A `Hash` representing the name to be registered.
+        ///
+        /// # Errors
+        ///
+        /// If the name already exists, returns an error.
         #[ink(message)]
         pub fn register(&mut self, name: Hash) -> Result<()> {
             let caller = self.env().caller();
             if self.name_to_owner.contains(name) {
-                return Err(Error::NameAlreadyExists)
+                return Err(Error::NameAlreadyExists);
             }
 
             self.name_to_owner.insert(name, &caller);
@@ -112,12 +133,13 @@ mod dns {
         }
 
         /// Set address for specific name.
+        /// If the caller is not the owner of the name, returns an error.
         #[ink(message)]
         pub fn set_address(&mut self, name: Hash, new_address: AccountId) -> Result<()> {
             let caller = self.env().caller();
             let owner = self.get_owner_or_default(name);
             if caller != owner {
-                return Err(Error::CallerIsNotOwner)
+                return Err(Error::CallerIsNotOwner);
             }
 
             let old_address = self.name_to_address.get(name);
@@ -133,12 +155,13 @@ mod dns {
         }
 
         /// Transfer owner to another address.
+        /// If the caller is not the owner of the name, returns an error.
         #[ink(message)]
         pub fn transfer(&mut self, name: Hash, to: AccountId) -> Result<()> {
             let caller = self.env().caller();
             let owner = self.get_owner_or_default(name);
             if caller != owner {
-                return Err(Error::CallerIsNotOwner)
+                return Err(Error::CallerIsNotOwner);
             }
 
             let old_owner = self.name_to_owner.get(name);
@@ -155,12 +178,14 @@ mod dns {
         }
 
         /// Get address for specific name.
+        /// Returns the address associated with the given name or the default address.
         #[ink(message)]
         pub fn get_address(&self, name: Hash) -> AccountId {
             self.get_address_or_default(name)
         }
 
         /// Get owner of specific name.
+        /// Returns the owner of the given name or the default address.
         #[ink(message)]
         pub fn get_owner(&self, name: Hash) -> AccountId {
             self.get_owner_or_default(name)
@@ -190,8 +215,7 @@ mod dns {
     mod tests {
         use super::*;
 
-        fn default_accounts(
-        ) -> ink::env::test::DefaultAccounts<ink::env::DefaultEnvironment> {
+        fn default_accounts() -> ink::env::test::DefaultAccounts<ink::env::DefaultEnvironment> {
             ink::env::test::default_accounts::<Environment>()
         }
 

@@ -25,10 +25,9 @@ const inconsolata = Inconsolata({
   subsets: ['latin'],
 })
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      {/* TODO SEO */}
       <DefaultSeo
         dangerouslySetAllPagesToNoFollow={!env.isProduction}
         dangerouslySetAllPagesToNoIndex={!env.isProduction}
@@ -52,18 +51,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           handle: '@scio_xyz', // TODO
         }}
       />
-
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-
-        {/* Set Font Variables */}
         <style>{`
           :root {
             --font-inconsolata: ${inconsolata.style.fontFamily}, 'Inconsolata';
           }
         `}</style>
       </Head>
-
       <UseInkathonProvider
         appName="ink!athon" // TODO
         connectOnInit={true}
@@ -88,4 +83,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default App

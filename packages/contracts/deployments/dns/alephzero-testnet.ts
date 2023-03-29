@@ -1,1 +1,1 @@
-export const address = '5EVvnZ3UMssQHByGJzJA98VJMo9QaVzpWKigxU66H83rMMvN'
+export const address = '5FaaktSD2X58Pr7oEBcSUDFvRTN8i4CnnmEqJJsj617jPob2'

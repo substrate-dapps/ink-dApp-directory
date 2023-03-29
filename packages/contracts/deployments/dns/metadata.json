@@ -197,7 +197,19 @@
           }
         ],
         "docs": [
-          " Register specific name with caller as owner."
+          " Register a specific name with the caller as the owner.",
+          "",
+          " This method allows users to register unique names that can be later associated with",
+          " other information, such as addresses or other data. A name can only be registered once,",
+          " and the caller becomes the owner of the name.",
+          "",
+          " # Params",
+          "",
+          " - `name`: A `Hash` representing the name to be registered.",
+          "",
+          " # Errors",
+          "",
+          " If the name already exists, returns an error."
         ],
         "label": "register",
         "mutates": true,
@@ -233,7 +245,8 @@
           }
         ],
         "docs": [
-          " Set address for specific name."
+          " Set address for specific name.",
+          " If the caller is not the owner of the name, returns an error."
         ],
         "label": "set_address",
         "mutates": true,
@@ -269,7 +282,8 @@
           }
         ],
         "docs": [
-          " Transfer owner to another address."
+          " Transfer owner to another address.",
+          " If the caller is not the owner of the name, returns an error."
         ],
         "label": "transfer",
         "mutates": true,
@@ -296,7 +310,8 @@
           }
         ],
         "docs": [
-          " Get address for specific name."
+          " Get address for specific name.",
+          " Returns the address associated with the given name or the default address."
         ],
         "label": "get_address",
         "mutates": false,
@@ -323,7 +338,8 @@
           }
         ],
         "docs": [
-          " Get owner of specific name."
+          " Get owner of specific name.",
+          " Returns the owner of the given name or the default address."
         ],
         "label": "get_owner",
         "mutates": false,
