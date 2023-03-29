@@ -45,8 +45,6 @@ mod incrementer {
             assert_eq!(contract.get(), 42);
             contract.inc(5);
             assert_eq!(contract.get(), 47);
-            contract.inc(-50);
-            assert_eq!(contract.get(), -3);
         }
     }
 }

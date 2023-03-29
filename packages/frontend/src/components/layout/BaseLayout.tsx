@@ -26,7 +26,7 @@ export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
         </Navbar>
       }
       header={
-        <Header height={60} p="xs">
+        <Header height={80} p="xs">
           <ConnectButton />
         </Header>
       }
