@@ -89,7 +89,7 @@ export const Increment = () => {
           {!!isConnected && (
             <form>
               <TextInput
-                label="Update Greeting"
+                label="Increment"
                 disabled={updateIsLoading}
                 {...form.getInputProps('incBy')}
               />
