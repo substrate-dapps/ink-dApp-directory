@@ -19,29 +19,26 @@ export const Transfer = () => {
 
   const onSubmit = async () => {
     if (!activeAccount || !contract || !activeSigner || !api) {
-      toast.error('Wallet not connected. Try again…')
+      toast.error('Please connect your wallet to perform this action.')
       return
     }
     setUpdateIsLoading(true)
 
-    toast.loading('Executing contractTx', { id: `update` })
+    toast.loading('Transfering…', { id: `update` })
 
     try {
       const name = form.values.name
       const hash = blake2AsHex(name)
-      const result = await contractTx(api, activeAccount.address, contract, 'getAddress', {}, [
+      const result = await contractTx(api, activeAccount.address, contract, 'transfer', {}, [
         hash,
+        form.values.to,
       ])
 
       console.log('result', result)
 
       toast.success(`Successfully transfered ${name}!`)
     } catch (e: any) {
-      if (e?.errorMessage?.includes('NameAlreadyExists')) {
-        form.setFieldError('name', 'Name already exists')
-        return
-      }
-      toast.error('Error while registering name. Try again…')
+      toast.error('Error while transferring name. Please try again.')
     } finally {
       setUpdateIsLoading(false)
       toast.dismiss(`update`)
