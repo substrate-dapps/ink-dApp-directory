@@ -2,35 +2,40 @@ import { useState } from 'react'
 import { Button, Center, Card, TextInput, Text, useMantineTheme, Divider } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { ContractIds } from '@deployments/deployments'
-import {
-  contractTx,
-  unwrapResultOrError,
-  useInkathon,
-  useRegisteredContract,
-} from '@scio-labs/use-inkathon'
+import { contractTx, useInkathon, useRegisteredContract } from '@scio-labs/use-inkathon'
 import toast from 'react-hot-toast'
 import { blake2AsHex } from '@polkadot/util-crypto'
 
-export const Register = () => {
+export const Transfer = () => {
   const { api, activeAccount, isConnected, activeSigner } = useInkathon()
   const { contract } = useRegisteredContract(ContractIds.DNS)
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>()
-  const form = useForm<{ name: string }>()
-  const theme = useMantineTheme()
+  const form = useForm<{ name: string; to: string }>({
+    initialValues: {
+      name: '',
+      to: '',
+    },
+  })
 
-  const register = async () => {
+  const onSubmit = async () => {
     if (!activeAccount || !contract || !activeSigner || !api) {
       toast.error('Wallet not connected. Try again…')
       return
     }
     setUpdateIsLoading(true)
-    toast.loading('Incrementing…', { id: `update` })
+
+    toast.loading('Executing contractTx', { id: `update` })
+
     try {
       const name = form.values.name
       const hash = blake2AsHex(name)
-      await contractTx(api, activeAccount.address, contract, 'register', {}, [hash])
-      toast.success(`Successfully registered ${name}!`)
-      form.reset()
+      const result = await contractTx(api, activeAccount.address, contract, 'getAddress', {}, [
+        hash,
+      ])
+
+      console.log('result', result)
+
+      toast.success(`Successfully transfered ${name}!`)
     } catch (e: any) {
       if (e?.errorMessage?.includes('NameAlreadyExists')) {
         form.setFieldError('name', 'Name already exists')
@@ -48,20 +53,20 @@ export const Register = () => {
   return (
     <Center>
       <div style={{ width: '20rem' }}>
-        <Card shadow="sm" padding={theme.spacing.md}>
-          <Text size="lg">DNS Smart Contract</Text>
-          <Divider size="sm" my={20} />
+        <Divider size="lg" my={20} />
+        <Card shadow="sm" withBorder>
           {!!isConnected && (
             <form>
               <TextInput label="Name" disabled={updateIsLoading} {...form.getInputProps('name')} />
+              <TextInput label="To" disabled={updateIsLoading} {...form.getInputProps('to')} />
               <Divider size="sm" my={20} />
               <Button
                 variant="outline"
                 disabled={updateIsLoading}
-                onClick={register}
+                onClick={onSubmit}
                 loading={updateIsLoading}
               >
-                Register
+                Transfer
               </Button>
             </form>
           )}
