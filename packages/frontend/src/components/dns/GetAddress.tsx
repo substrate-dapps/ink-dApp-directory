@@ -51,26 +51,22 @@ export const GetAddress = () => {
   if (!contract) return null
 
   return (
-    <Center>
-      <div style={{ width: '20rem' }}>
-        <Divider size="lg" my={20} />
-        <Card shadow="sm" padding={theme.spacing.md}>
-          {!!isConnected && (
-            <form>
-              <TextInput label="Name" disabled={updateIsLoading} {...form.getInputProps('name')} />
-              <Divider size="sm" my={20} />
-              <Button
-                variant="outline"
-                disabled={updateIsLoading}
-                onClick={onSubmit}
-                loading={updateIsLoading}
-              >
-                Get address
-              </Button>
-            </form>
-          )}
-        </Card>
-      </div>
-    </Center>
+    <Card shadow="sm" padding={theme.spacing.md}>
+      <Text size="lg">Get address</Text>
+      {!!isConnected && (
+        <form>
+          <TextInput label="Name" disabled={updateIsLoading} {...form.getInputProps('name')} />
+          <Divider size="sm" my={20} />
+          <Button
+            variant="outline"
+            disabled={updateIsLoading}
+            onClick={onSubmit}
+            loading={updateIsLoading}
+          >
+            Get address
+          </Button>
+        </form>
+      )}
+    </Card>
   )
 }

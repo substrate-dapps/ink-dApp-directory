@@ -1,36 +1,41 @@
 import { useState } from 'react'
-import { Button, Center, Card, TextInput, Text, useMantineTheme, Divider } from '@mantine/core'
+import { Button, Card, TextInput, Text, useMantineTheme, Divider } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { ContractIds } from '@deployments/deployments'
-import {
-  contractTx,
-  unwrapResultOrError,
-  useInkathon,
-  useRegisteredContract,
-} from '@scio-labs/use-inkathon'
+import { contractTx, useInkathon, useRegisteredContract } from '@scio-labs/use-inkathon'
 import toast from 'react-hot-toast'
 import { blake2AsHex } from '@polkadot/util-crypto'
 
-export const Register = () => {
+export const GetOwner = () => {
   const { api, activeAccount, isConnected, activeSigner } = useInkathon()
   const { contract } = useRegisteredContract(ContractIds.DNS)
   const [updateIsLoading, setUpdateIsLoading] = useState<boolean>()
-  const form = useForm<{ name: string }>()
+  const form = useForm<{ name: string; owner: string }>({
+    initialValues: {
+      name: '',
+      owner: '',
+    },
+  })
   const theme = useMantineTheme()
 
-  const register = async () => {
+  const onSubmit = async () => {
     if (!activeAccount || !contract || !activeSigner || !api) {
       toast.error('Wallet not connected. Try again…')
       return
     }
     setUpdateIsLoading(true)
-    toast.loading('Incrementing…', { id: `update` })
+
+    toast.loading('Executing contractTx', { id: `update` })
+
     try {
       const name = form.values.name
       const hash = blake2AsHex(name)
-      await contractTx(api, activeAccount.address, contract, 'register', {}, [hash])
+      const result = await contractTx(api, activeAccount.address, contract, 'getOwner', {}, [hash])
+      const owner = (result?.dryResult?.result?.value?.toHuman() as any)?.data
+
+      form.setFieldValue('owner', owner)
+
       toast.success(`Successfully registered ${name}!`)
-      form.reset()
     } catch (e: any) {
       if (e?.errorMessage?.includes('NameAlreadyExists')) {
         form.setFieldError('name', 'Name already exists')
@@ -47,19 +52,24 @@ export const Register = () => {
 
   return (
     <Card shadow="sm" padding={theme.spacing.md}>
-      <Text size="lg">Register</Text>
-      <Divider size="sm" my={20} />
+      <Text size="lg">Get owner</Text>
       {!!isConnected && (
         <form>
           <TextInput label="Name" disabled={updateIsLoading} {...form.getInputProps('name')} />
           <Divider size="sm" my={20} />
+          {form.values.owner && (
+            <>
+              <Text size="sm">{`Owner: ${form.values.owner}`}</Text>
+              <Divider size="sm" my={20} />
+            </>
+          )}
           <Button
             variant="outline"
             disabled={updateIsLoading}
-            onClick={register}
+            onClick={onSubmit}
             loading={updateIsLoading}
           >
-            Register
+            Get address
           </Button>
         </form>
       )}

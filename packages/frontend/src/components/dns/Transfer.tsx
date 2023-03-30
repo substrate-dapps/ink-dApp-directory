@@ -48,27 +48,23 @@ export const Transfer = () => {
   if (!contract) return null
 
   return (
-    <Center>
-      <div style={{ width: '20rem' }}>
-        <Divider size="lg" my={20} />
-        <Card shadow="sm" withBorder>
-          {!!isConnected && (
-            <form>
-              <TextInput label="Name" disabled={updateIsLoading} {...form.getInputProps('name')} />
-              <TextInput label="To" disabled={updateIsLoading} {...form.getInputProps('to')} />
-              <Divider size="sm" my={20} />
-              <Button
-                variant="outline"
-                disabled={updateIsLoading}
-                onClick={onSubmit}
-                loading={updateIsLoading}
-              >
-                Transfer
-              </Button>
-            </form>
-          )}
-        </Card>
-      </div>
-    </Center>
+    <Card shadow="sm" withBorder>
+      <Text size="lg">Transfer</Text>
+      {!!isConnected && (
+        <form>
+          <TextInput label="Name" disabled={updateIsLoading} {...form.getInputProps('name')} />
+          <TextInput label="To" disabled={updateIsLoading} {...form.getInputProps('to')} />
+          <Divider size="sm" my={20} />
+          <Button
+            variant="outline"
+            disabled={updateIsLoading}
+            onClick={onSubmit}
+            loading={updateIsLoading}
+          >
+            Transfer
+          </Button>
+        </form>
+      )}
+    </Card>
   )
 }
