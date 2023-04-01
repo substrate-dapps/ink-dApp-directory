@@ -55,20 +55,13 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-pub use self::multisig::{
-    ConfirmationStatus,
-    Multisig,
-    Transaction,
-};
+pub use self::multisig::{ConfirmationStatus, Multisig, Transaction};
 
 #[ink::contract]
 mod multisig {
     use ink::{
         env::{
-            call::{
-                build_call,
-                ExecutionInput,
-            },
+            call::{build_call, ExecutionInput},
             CallFlags,
         },
         prelude::vec::Vec,
@@ -80,8 +73,7 @@ mod multisig {
     const MAX_OWNERS: u32 = 50;
 
     type TransactionId = u32;
-    const WRONG_TRANSACTION_ID: &str =
-        "The user specified an invalid transaction id. Abort.";
+    const WRONG_TRANSACTION_ID: &str = "The user specified an invalid transaction id. Abort.";
 
     /// A wrapper that allows us to encode a blob of bytes.
     ///
@@ -439,15 +431,34 @@ mod multisig {
             &mut self,
             transaction: Transaction,
         ) -> (TransactionId, ConfirmationStatus) {
+            // Ensure the caller is one of the wallet's owners
             self.ensure_caller_is_owner();
+
+            // Retrieve the next available transaction ID
             let trans_id = self.transaction_list.next_id;
+
+            // Increment the transaction ID, checking for overflow
+            // and ensuring transaction IDs do not exceed the maximum limit
             self.transaction_list.next_id =
                 trans_id.checked_add(1).expect("Transaction ids exhausted.");
+
+            // Insert the new transaction into the transactions mapping
+            // with the generated transaction ID as the key
             self.transactions.insert(trans_id, &transaction);
+
+            // Add the transaction ID to the list of transaction IDs
+            // in the `transaction_list`
             self.transaction_list.transactions.push(trans_id);
+
+            // Emit an event to notify external parties that a new
+            // transaction has been submitted
             self.env().emit_event(Submission {
                 transaction: trans_id,
             });
+
+            // Return the transaction ID and the confirmation status
+            // after automatically confirming the transaction for the caller
+            // (the owner who submitted the transaction)
             (
                 trans_id,
                 self.confirm_by_caller(self.env().caller(), trans_id),
@@ -478,10 +489,7 @@ mod multisig {
         ///
         /// If `trans_id` is no valid transaction id.
         #[ink(message)]
-        pub fn confirm_transaction(
-            &mut self,
-            trans_id: TransactionId,
-        ) -> ConfirmationStatus {
+        pub fn confirm_transaction(&mut self, trans_id: TransactionId) -> ConfirmationStatus {
             self.ensure_caller_is_owner();
             self.ensure_transaction_exists(trans_id);
             self.confirm_by_caller(self.env().caller(), trans_id)
@@ -503,9 +511,7 @@ mod multisig {
                 let mut confirmation_count = self
                     .confirmation_count
                     .get(trans_id)
-                    .expect(
-                    "There is a entry in `self.confirmations`. Hence a count must exit.",
-                );
+                    .expect("There is a entry in `self.confirmations`. Hence a count must exit.");
                 // Will not underflow as there is at least one confirmation
                 confirmation_count -= 1;
                 self.confirmation_count
@@ -526,10 +532,7 @@ mod multisig {
         /// Its return value indicates whether the called transaction was successful.
         /// This can be called by anyone.
         #[ink(message, payable)]
-        pub fn invoke_transaction(
-            &mut self,
-            trans_id: TransactionId,
-        ) -> Result<(), Error> {
+        pub fn invoke_transaction(&mut self, trans_id: TransactionId) -> Result<(), Error> {
             self.ensure_confirmed(trans_id);
             let t = self.take_transaction(trans_id).expect(WRONG_TRANSACTION_ID);
             assert!(self.env().transferred_value() == t.transferred_value);
@@ -538,9 +541,7 @@ mod multisig {
                 .gas_limit(t.gas_limit)
                 .transferred_value(t.transferred_value)
                 .call_flags(CallFlags::default().set_allow_reentry(t.allow_reentry))
-                .exec_input(
-                    ExecutionInput::new(t.selector.into()).push_arg(CallInput(&t.input)),
-                )
+                .exec_input(ExecutionInput::new(t.selector.into()).push_arg(CallInput(&t.input)))
                 .returns::<()>()
                 .try_invoke();
 
@@ -562,10 +563,7 @@ mod multisig {
         /// its output when successful.
         /// This can be called by anyone.
         #[ink(message, payable)]
-        pub fn eval_transaction(
-            &mut self,
-            trans_id: TransactionId,
-        ) -> Result<Vec<u8>, Error> {
+        pub fn eval_transaction(&mut self, trans_id: TransactionId) -> Result<Vec<u8>, Error> {
             self.ensure_confirmed(trans_id);
             let t = self.take_transaction(trans_id).expect(WRONG_TRANSACTION_ID);
             let result = build_call::<<Self as ::ink::env::ContractEnv>::Env>()
@@ -573,9 +571,7 @@ mod multisig {
                 .gas_limit(t.gas_limit)
                 .transferred_value(t.transferred_value)
                 .call_flags(CallFlags::default().set_allow_reentry(t.allow_reentry))
-                .exec_input(
-                    ExecutionInput::new(t.selector.into()).push_arg(CallInput(&t.input)),
-                )
+                .exec_input(ExecutionInput::new(t.selector.into()).push_arg(CallInput(&t.input)))
                 .returns::<Vec<u8>>()
                 .try_invoke();
 
@@ -714,10 +710,7 @@ mod multisig {
     #[cfg(test)]
     mod tests {
         use super::*;
-        use ink::env::{
-            call::utils::ArgumentList,
-            test,
-        };
+        use ink::env::{call::utils::ArgumentList, test};
 
         const WALLET: [u8; 32] = [7; 32];
 
