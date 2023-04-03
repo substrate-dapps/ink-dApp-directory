@@ -28,7 +28,16 @@ export const SubmitTransaction = () => {
     try {
       const name = form.values.name
       const hash = blake2AsHex(name)
-      await contractTx(api, activeAccount.address, contract, 'submitTransaction', {}, [hash])
+      const result = await contractTx(
+        api,
+        activeAccount.address,
+        contract,
+        'submitTransaction',
+        {},
+        [],
+      )
+      const message = unwrapResultOrError<string>(result as any)
+
       toast.success(`Transaction submitted successfully for ${name}!`)
       form.reset()
     } catch (e: any) {

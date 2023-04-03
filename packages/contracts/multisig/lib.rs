@@ -112,19 +112,45 @@ mod multisig {
             ink::storage::traits::StorageLayout
         )
     )]
+
     pub struct Transaction {
         /// The `AccountId` of the contract that is called in this transaction.
+        /// This specifies the destination contract address for this transaction.
         pub callee: AccountId,
-        /// The selector bytes that identifies the function of the callee that should be called.
+
+        /// The selector bytes that identify the function of the callee that should be called.
+        /// These bytes are derived from the function signature and are used to identify
+        /// the exact function to be executed in the destination contract.
+        ///
+        /// Selectors are necessary because smart contracts can have multiple functions with
+        /// different signatures. When a contract receives a call, it needs to know which
+        /// function to execute. The selector bytes serve as a unique identifier for each
+        /// function, allowing the contract to route the call to the correct function.
+        ///
+        /// In Ethereum, for example, selectors are computed by taking the first 4 bytes of
+        /// the Keccak-256 hash of the function signature. In the case of ink!, the
+        /// `selector_bytes!` macro is used to compute the selector from the function
+        /// signature at compile time.
         pub selector: [u8; 4],
+
         /// The SCALE encoded parameters that are passed to the called function.
+        /// These parameters are encoded using the SCALE codec to allow for efficient
+        /// serialization and deserialization of the data when passing it to the called function.
         pub input: Vec<u8>,
+
         /// The amount of chain balance that is transferred to the callee.
+        /// This value represents the funds being sent along with the transaction to the destination contract.
         pub transferred_value: Balance,
+
         /// Gas limit for the execution of the call.
+        /// This sets an upper limit on the amount of gas that can be consumed during the
+        /// execution of the transaction. If the execution exceeds this limit, the transaction
+        /// will be reverted.
         pub gas_limit: u64,
-        /// If set to true the transaction will be allowed to re-enter the multisig contract.
+
+        /// If set to true, the transaction will be allowed to re-enter the multisig contract.
         /// Re-entrancy can lead to vulnerabilities. Use at your own risk.
+        /// By default, this should be set to false to prevent potential re-entrancy attacks.
         pub allow_reentry: bool,
     }
 
