@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react'
 import { AppShell, Navbar, Header, NavLink, Box } from '@mantine/core'
-import { IconHome2, IconPlus, IconWorldWww } from '@tabler/icons-react'
+import { IconHome2, IconPlus, IconWorldWww, IconCurrencyDollar } from '@tabler/icons-react'
 import { useRouter } from 'next/router'
 
 import { ConnectButton } from '@components/web3/ConnectButton'
@@ -22,6 +22,11 @@ const routes = [
     icon: <IconPlus size="1rem" stroke={1.5} />,
     path: '/incrementer',
   },
+  {
+    label: 'Transfer',
+    icon: <IconCurrencyDollar size="1rem" stroke={1.5} />,
+    path: '/transfer',
+  },
 ]
 
 export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
@@ -40,7 +45,7 @@ export const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
               onClick={() => router.push(route.path)}
             />
           ))}
-          <Box pt="64vh">
+          <Box pt="55vh">
             <ChainInfo />
           </Box>
         </Navbar>
