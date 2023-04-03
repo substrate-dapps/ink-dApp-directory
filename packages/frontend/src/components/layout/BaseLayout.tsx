@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react'
 import { AppShell, Navbar, Header, NavLink, Box } from '@mantine/core'
-import { IconHome2, IconPlus, IconWorldWww } from '@tabler/icons-react'
+import { IconHome2, IconPlus, IconWorldWww, IconKey } from '@tabler/icons-react'
 import { useRouter } from 'next/router'
 
 import { ConnectButton } from '@components/web3/ConnectButton'
@@ -21,6 +21,11 @@ const routes = [
     label: 'Incrementer',
     icon: <IconPlus size="1rem" stroke={1.5} />,
     path: '/incrementer',
+  },
+  {
+    label: 'Multisig',
+    icon: <IconKey size="1rem" stroke={1.5} />,
+    path: '/multisig',
   },
 ]
 
