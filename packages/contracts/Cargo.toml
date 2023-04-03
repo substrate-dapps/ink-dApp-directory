@@ -4,4 +4,5 @@ members = [
     "dns",
     "house_bidding",
     "incrementer",
+    "house_bidding"
 ]
