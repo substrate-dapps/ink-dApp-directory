@@ -2,5 +2,6 @@
 
 members = [
     "dns",
+    "house_bidding",
     "incrementer",
 ]
