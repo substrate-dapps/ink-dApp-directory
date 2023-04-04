@@ -40,9 +40,7 @@ export const WasItTen = () => {
 
       toast.success(`Successfully sent ${value} tokens!`)
     } catch (e: any) {
-      console.log('e', e)
-
-      toast.error('Error while sending tokens. Try again…')
+      form.setFieldError('value', "The value wasn't 10")
     } finally {
       setSendValueIsLoading(false)
       toast.dismiss(`sendValue`)
